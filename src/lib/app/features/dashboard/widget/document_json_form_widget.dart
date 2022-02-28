@@ -36,12 +36,8 @@ class DocumentJsonFormState extends State<DocumentJsonForm> {
     return ListView(
       controller: ScrollController(),
       children: [
-        Text(
-          "Open/Save Json File",
-          style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 35.0,
-              fontFamily: 'Merriweather'),
+        AppBar(
+          title: Text("Open/Save Json File"),
         ),
         const SizedBox(height: 21.0),
         InputField(widget.controller.titleInputFieldController,
