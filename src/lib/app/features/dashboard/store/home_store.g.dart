@@ -24,6 +24,39 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     });
   }
 
+  final _$documentJsonFormControllerAtom =
+      Atom(name: '_HomeStoreBase.documentJsonFormController');
+
+  @override
+  DocumentJsonFormController get documentJsonFormController {
+    _$documentJsonFormControllerAtom.reportRead();
+    return super.documentJsonFormController;
+  }
+
+  @override
+  set documentJsonFormController(DocumentJsonFormController value) {
+    _$documentJsonFormControllerAtom
+        .reportWrite(value, super.documentJsonFormController, () {
+      super.documentJsonFormController = value;
+    });
+  }
+
+  final _$recentFilesAsyncAction = AsyncAction('_HomeStoreBase.recentFiles');
+
+  @override
+  Future<RecentsDocumentsDto> recentFiles() {
+    return _$recentFilesAsyncAction.run(() => super.recentFiles());
+  }
+
+  final _$saveRecentFilesAsyncAction =
+      AsyncAction('_HomeStoreBase.saveRecentFiles');
+
+  @override
+  Future<RecentsDocumentsDto> saveRecentFiles(String filePath) {
+    return _$saveRecentFilesAsyncAction
+        .run(() => super.saveRecentFiles(filePath));
+  }
+
   final _$openDocumentFromFileAsyncAction =
       AsyncAction('_HomeStoreBase.openDocumentFromFile');
 
@@ -59,7 +92,8 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   @override
   String toString() {
     return '''
-document: ${document}
+document: ${document},
+documentJsonFormController: ${documentJsonFormController}
     ''';
   }
 }

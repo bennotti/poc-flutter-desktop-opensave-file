@@ -1,7 +1,13 @@
-## POC-Flutter-Web-Backoffice
+## POC-Flutter-Open/Save-Json-File
 
-### Objetivo:
-desenvolver um template de backoffice/Painel template utilizando flutter, responsivo, "tablet first".
+### Objective:
+using the size 800x600 pixels, implement a flutter application that allows opening and saving a json file.
+
+acceptance criteria:
+- be desktop
+- open a json file
+- save the title and details fields in a json file
+- show recent files using localstorage
 
 ### Comandos:
 #### Habilitar web
@@ -38,6 +44,10 @@ Flutter 2.10.0 • channel stable • https://github.com/flutter/flutter.git
 Framework • revision 5f105a6ca7 (4 days ago) • 2022-02-01 14:15:42 -0800
 Engine • revision 776efd2034
 Tools • Dart 2.16.0 • DevTools 2.9.2
+```
+```
+28/02/2022
+em testes realizados flutter desktop não funciona com visual studio 2022 recomendado utilizar o visual studio 2019
 ```
 ##### Instalação do flutter:
 ```

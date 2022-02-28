@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:window_manager/window_manager.dart';
 
 import '../../../../domain/dtos/document_json_dto.dart';
 import '../../../shared/widget/sidebar_widget.dart';
@@ -13,14 +16,64 @@ class HomePage extends StatefulWidget {
   HomePageState createState() => HomePageState();
 }
 
-class HomePageState extends ModularState<HomePage, HomeStore> {
+class HomePageState extends ModularState<HomePage, HomeStore>
+    with WindowListener {
+  bool _confirmCloseShowing = false;
   bool _loading = true;
   DocumentJsonDto? _document;
   @override
   void initState() {
-    super.initState();
+    windowManager.addListener(this);
     getDocument();
     hideLoading();
+    _init();
+    super.initState();
+  }
+
+  void _init() async {
+    // Add this line to override the default close handler
+    await windowManager.setPreventClose(true);
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    windowManager.removeListener(this);
+    super.dispose();
+  }
+
+  @override
+  void onWindowClose() async {
+    if (_confirmCloseShowing) return;
+    bool _isPreventClose = await windowManager.isPreventClose();
+    if (_isPreventClose) {
+      _confirmCloseShowing = true;
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text('Are you sure you want to close this window?'),
+            actions: [
+              TextButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _confirmCloseShowing = false;
+                },
+              ),
+              TextButton(
+                child: Text('Yes'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  exit(0);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   setDocument(DocumentJsonDto? document) {
@@ -46,7 +99,6 @@ class HomePageState extends ModularState<HomePage, HomeStore> {
   }
 
   _onNewClick(BuildContext context) async {
-    print('new clicado');
     showLoading();
     await controller.newDocument();
     getDocument();
@@ -67,18 +119,19 @@ class HomePageState extends ModularState<HomePage, HomeStore> {
   Widget _loadDocumentForm() {
     return _loading
         ? Center(child: CircularProgressIndicator())
-        : Expanded(
-            child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: DocumentJsonForm(this._document),
-          ));
+        : DocumentJsonForm(
+            this._document, controller.documentJsonFormController);
   }
 
   Widget _load() {
     return Row(
       children: <Widget>[
         SidebarWidget(_onNewClick, _onOpenClick, _onSaveClick),
-        _loadDocumentForm(),
+        Expanded(
+            child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: _loadDocumentForm(),
+        ))
       ],
     );
   }

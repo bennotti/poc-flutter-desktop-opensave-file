@@ -11,20 +11,23 @@ import 'domain/contract/application/business_rules/ICredencialBusinessRules.dart
 import 'domain/contract/application/business_rules/IOnboardingBusinessRules.dart';
 import 'domain/contract/application/external_services/IApiExternaService.dart';
 import 'domain/contract/application/internal_services/ICredencialService.dart';
+import 'domain/contract/infraestructure/localstorage/ILocalStorage.dart';
 import 'infraestructure/http_client/custom_dio.dart';
+import 'infraestructure/localstorage/local_storage_hive.dart';
 
 List<Bind> setupServiceProvider(List<Bind> binds) {
   // serviceProvider.registerSingleton<AppModel>(AppModel());
   // serviceProvider.registerLazySingleton<RESTAPI>(() =>RestAPIImplementation());
   //var myAppModel = serviceProvider.get<AppModel>();
   return [
+    Bind((i) => Dio()),
+    Bind((i) => CustomDio(i.get())),
+    Bind<ILocalStorage>((i) => LocalStorageHive()),
     Bind<IApiExternaService>((i) => ApiExternaService(i.get())),
     Bind<ICredencialService>((i) => CredencialService(i.get())),
     Bind<IOnboardingBusinessRules>((i) => OnboardingBusinessRules()),
     Bind<ICredencialBusinessRules>((i) => CredencialBusinessRules(i.get())),
-    Bind<IAplicacaoBusinessRules>((i) => AplicacaoBusinessRules()),
-    Bind((i) => Dio()),
-    Bind((i) => CustomDio(i.get())),
+    Bind<IAplicacaoBusinessRules>((i) => AplicacaoBusinessRules(i.get())),
     ...binds
   ];
 }

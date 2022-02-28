@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../../../domain/dtos/document_json_dto.dart';
 import '../../../shared/widget/input_field.dart';
+import 'controllers/document_json_form_controller.dart';
 
 class DocumentJsonForm extends StatefulWidget {
   final DocumentJsonDto? document;
+  final DocumentJsonFormController controller;
 
-  const DocumentJsonForm(this.document, {Key? key}) : super(key: key);
+  const DocumentJsonForm(this.document, this.controller, {Key? key})
+      : super(key: key);
   @override
   DocumentJsonFormState createState() => DocumentJsonFormState();
 }
 
 class DocumentJsonFormState extends State<DocumentJsonForm> {
-  final titleInputFieldController = TextEditingController();
-  final detailsInputFieldController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -23,8 +24,10 @@ class DocumentJsonFormState extends State<DocumentJsonForm> {
 
   Future carregarDados() async {
     setState(() {
-      titleInputFieldController.text = widget.document?.title ?? "qwe";
-      detailsInputFieldController.text = widget.document?.details ?? "qwe1";
+      widget.controller.titleInputFieldController.text =
+          widget.document?.title ?? '';
+      widget.controller.detailsInputFieldController.text =
+          widget.document?.details ?? '';
     });
   }
 
@@ -41,10 +44,10 @@ class DocumentJsonFormState extends State<DocumentJsonForm> {
               fontFamily: 'Merriweather'),
         ),
         const SizedBox(height: 21.0),
-        InputField(titleInputFieldController,
+        InputField(widget.controller.titleInputFieldController,
             label: "Title", hintText: "Title of document"),
         SizedBox(height: 20.0),
-        InputField(detailsInputFieldController,
+        InputField(widget.controller.detailsInputFieldController,
             label: "Details", hintText: "Details of document"),
         SizedBox(height: 20.0),
       ],

@@ -11,8 +11,6 @@ class ListItemSaveFileWidget extends StatelessWidget {
     return ListTile(
       title: Text('Salve'),
       onTap: () async {
-        // if (document == null) return;
-
         String? filePath = await FilePicker.platform.saveFile(
           dialogTitle: 'Please select an output file:',
           fileName: 'document.json',
@@ -24,7 +22,7 @@ class ListItemSaveFileWidget extends StatelessWidget {
           // User canceled the picker
           return;
         }
-        print(filePath);
+
         this.onClick(context, filePath);
       },
     );
