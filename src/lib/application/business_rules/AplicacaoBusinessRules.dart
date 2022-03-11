@@ -10,7 +10,7 @@ class AplicacaoBusinessRules implements IAplicacaoBusinessRules {
   Future<CredencialCheckResponseDto?> handle(
       CredencialCheckRequestDto request) async {
     String? response = await storage.get("token");
-    return await Future.delayed(Duration(milliseconds: 100),
+    return await Future.delayed(Duration(milliseconds: 1000),
         () => response != null ? new CredencialCheckResponseDto() : null);
   }
 }

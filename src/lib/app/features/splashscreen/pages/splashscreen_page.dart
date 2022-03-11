@@ -18,18 +18,17 @@ class SplashscreenPageState
 
   @override
   void initState() {
+    checkLogin();
     super.initState();
+  }
 
-    disposer = autorun((_) async {
-      await store.checkLogin();
-
-      Modular.to.navigate('/dashboard');
-    });
+  Future checkLogin() async {
+    await store.checkLogin();
+    Modular.to.navigate('/dashboard');
   }
 
   @override
   void dispose() {
-    disposer();
     super.dispose();
   }
 
